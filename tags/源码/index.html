@@ -7,7 +7,7 @@
     <meta name="keywords" content="标签: 源码, 云爬虫技术研究笔记">
     <meta name="description" content="标签: 源码 | 云爬虫技术研究笔记">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="format-detection" content="telephone=no">
@@ -17,7 +17,7 @@
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" type="text/css" href="/libs/materialize/css/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
     <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
     <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
     <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
@@ -35,19 +35,18 @@
 
 <header class="navbar-fixed">
     <nav id="headNav" class="bg-color nav-transparent">
-        <div id="navContainer" class="container">
-            <div class="nav-wrapper">
-                <div class="brand-logo">
-                    <a href="/" class="waves-effect waves-light">
-                        
-                        <img src="/medias/logo.png" class="logo-img hide-on-small-only">
-                        
-                        <span class="logo-span">云爬虫技术研究笔记</span>
-                    </a>
-                </div>
-                
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">云爬虫技术研究笔记</span>
+                </a>
+            </div>
+            
 
-<a href="#" data-activates="mobile-nav" class="button-collapse"><i class="fa fa-navicon"></i></a>
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fa fa-navicon"></i></a>
 <ul class="right">
     
     <li class="hide-on-med-and-down">
@@ -105,14 +104,13 @@
     </li>
     
     <li>
-        <a id="toggleSearch" class="waves-effect waves-light">
-            <i id="searchIcon" class="mdi-action-search" title="搜索"></i>
+        <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+            <i id="searchIcon" class="fa fa-search" title="搜索"></i>
         </a>
     </li>
-
 </ul>
 
-<div class="side-nav" id="mobile-nav">
+<div id="mobile-nav" class="side-nav sidenav">
 
     <div class="mobile-head bg-color">
         
@@ -193,40 +191,12 @@
         </li>
         
     </ul>
-
-    <div class="social-link">
-    <a href="https://github.com/lateautumn4lin" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
-        <i class="fa fa-github"></i>
-    </a>
-
-
-
-    <a href="https://www.zhihu.com/people/lateautunm/columns" class="tooltipped" target="_blank" data-tooltip="看看我的知乎发言" data-position="top" data-delay="50">
-        <i class="fa fa-zhihu"></i>
-    </a>
-
-
-
-    <a href="mailto:hanqiulun1123@163.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
-        <i class="fa fa-envelope-open"></i>
-    </a>
-
-
-
-    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=386890866" class="tooltipped" data-tooltip="QQ联系我: 386890866" data-position="top" data-delay="50">
-        <i class="fa fa-qq"></i>
-    </a>
-
-
-
-</div>
 </div>
 
-            </div>
         </div>
 
         
-        <style>
+            <style>
     .nav-transparent .github-corner {
         display: none !important;
     }
@@ -283,35 +253,34 @@
 </a>
         
     </nav>
+
 </header>
 
-<div class="bg-cover  about-cover" style="background-image: url('/medias/cover.jpg')">
+<div class="bg-cover pd-header about-cover">
     <div class="container">
-        <div class="row">
-            <div class="col s10 offset-s1 m8 offset-m2 l8 offset-l2">
-                <div class="brand">
-                    <div class="title center-align">
-                    
-                        专注于云原生与爬虫领域
-                    
-                    </div>
+    <div class="row">
+    <div class="col s10 offset-s1 m8 offset-m2 l8 offset-l2">
+        <div class="brand">
+            <div class="title center-align">
+                
+                    专注于云原生与爬虫领域
+                
+            </div>
 
-                    <div class="description center-align">
-                    
-                        CloudNative的时代真的来临了！我们将会研究如何将爬虫技术完美地与当前的热门、前沿的相融合，更好地促进我们的爬虫架构。除此之外，我们不仅把视野投向云原生这个大环境，更会把目光聚集在爬虫的各个细节之中，探索那些难搞的反爬技术。
-                    
-                    </div>
-                </div>
+            <div class="description center-align">
+                
+                    CloudNative的时代真的来临了！我们将会研究如何将爬虫技术完美地与当前的热门、前沿的相融合，更好地促进我们的爬虫架构。除此之外，我们不仅把视野投向云原生这个大环境，更会把目光聚集在爬虫的各个细节之中，探索那些难搞的反爬技术。
+                
             </div>
         </div>
-        
     </div>
 </div>
-
 <script>
-// Dynamically switch banner pictures every day.
+// 每天切换 banner 图.  Switch banner image every day.
 $('.bg-cover').css('background-image', 'url(/medias/banner/' + new Date().getDay() + '.jpg)');
 </script>
+    </div>
+</div>
 
 <main class="content">
 
@@ -366,61 +335,55 @@ $('.bg-cover').css('background-image', 'url(/medias/banner/' + new Date().getDay
     </div>
 </div>
 
-    <div class="container">
-        
+    
 
-        <article>
-            <div class="row tags-posts">
-                
-                
-                <div class="article tag-post col s12 m6 l4" data-tags="K8S, 源码" data-aos="fade-up">
-                    <div class="card">
-                        <a href="/2019/08/28/tou-guo-zhen-shi-chang-jing-fen-xi-k8s-de-endpointcontroller-de-yuan-ma/">
-                            <div class="card-image tag-image">
+    <article id="articles" class="container articles">
+        <div class="row tags-posts">
+            
+            
+            <div class="article tag-post col s12 m6 l4 overflow-policy" data-tags="K8S, 源码" data-aos="fade-up">
+                <div class="card">
+                    <a href="/2019/08/28/tou-guo-zhen-shi-chang-jing-fen-xi-k8s-de-endpointcontroller-de-yuan-ma/">
+                        <div class="card-image tag-image">
+                            
+                            
+                            <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="透过真实场景分析K8S的EndpointController的源码">
+                            
+                            <span class="card-title">透过真实场景分析K8S的EndpointController的源码</span>
+                        </div>
+                    </a>
+                    <div class="card-content article-content">
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-08-28
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fa fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/解读K8S源码/" class="post-category" target="_blank">
+                                解读K8S源码
+                                </a>
                                 
                                 
-                                <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="透过真实场景分析K8S的EndpointController的源码">
-                                
-                                <span class="card-title">透过真实场景分析K8S的EndpointController的源码</span>
-                            </div>
-                        </a>
-                        <div class="card-content article-content">
-                            <div class="publish-info">
-                                <span class="publish-date">
-                                    <i class="fa fa-clock-o fa-fw icon-date"></i>2019-08-28
-                                </span>
-                                <span class="publish-author">
-                                    
-                                    <i class="fa fa-bookmark fa-fw icon-category"></i>
-                                    
-                                    <a href="/categories/解读K8S源码/" class="post-category" target="_blank">
-                                    解读K8S源码
-                                    </a>
-                                    
-                                    
-                                </span>
-                            </div>
+                            </span>
                         </div>
                     </div>
                 </div>
-                
             </div>
-        </article>
-    </div>
+            
+        </div>
+    </article>
 </main>
 
 
 <footer class="page-footer bg-color">
     <div class="container row center-align">
         <div class="col s12 m8 l8 copy-right">
-            
             本站由&copy;<a href="https://github.com/lateautumn4lin" target="_blank">lateautumn4lin</a>基于
             <a href="https://hexo.io/" target="_blank">Hexo</a> 的
             <a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">hexo-theme-matery</a>主题搭建.
 
-            
-                &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-                <span class="white-color">5.7k</span>
             
 
             
@@ -439,7 +402,6 @@ $('.bg-cover').css('background-image', 'url(/medias/banner/' + new Date().getDay
                 </span>
                 
             
-
             <br>
             <span id="sitetime"></span>
             <script language=javascript>
@@ -465,7 +427,7 @@ $('.bg-cover').css('background-image', 'url(/medias/banner/' + new Date().getDay
                     minutes - 0-59之间的整数，做为date对象的分钟数
                     seconds - 0-59之间的整数，做为date对象的秒数
                     microseconds - 0-999之间的整数，做为date对象的毫秒数 */
-                    var t1 = Date.UTC(2019,08,27,15,00,00); //北京时间2018-2-13 00:00:00
+                    var t1 = Date.UTC(2019,08,28,15,00,00); //北京时间2018-2-13 00:00:00
                     var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
                     var diff = t2-t1;
                     var diffYears = Math.floor(diff/years);
@@ -473,10 +435,10 @@ $('.bg-cover').css('background-image', 'url(/medias/banner/' + new Date().getDay
                     var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
                     var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
                     var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
-                    document.getElementById("sitetime").innerHTML="本站已经在各种奇妙BUG下已运行"+/*diffYears+" 年 "+*/diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
+                    document.getElementById("sitetime").innerHTML="本站已经在各种奇妙BUG下运行"+/*diffYears+" 年 "+*/diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
                 }/*因为建站时间还没有一年，就将之注释掉了。需要的可以取消*/
                 siteTime();
-        </script>
+            </script>
         </div>
         <div class="col s12 m4 l4 social-link social-statis">
     <a href="https://github.com/lateautumn4lin" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
@@ -485,8 +447,14 @@ $('.bg-cover').css('background-image', 'url(/medias/banner/' + new Date().getDay
 
 
 
-    <a href="https://www.zhihu.com/people/lateautunm/columns" class="tooltipped" target="_blank" data-tooltip="看看我的知乎发言" data-position="top" data-delay="50">
-        <i class="fa fa-zhihu"></i>
+    <a href="mailto:https://www.zhihu.com/people/lateautunm/columns" class="tooltipped" target="_blank" data-tooltip="看看我的知乎发言" data-position="top" data-delay="50">
+        <i class="fa fa-inverse">知</i>
+    </a>
+
+
+
+    <a href="mailto:https://www.jianshu.com/u/e9fdf09df277" class="tooltipped" target="_blank" data-tooltip="读读我的简书" data-position="top" data-delay="50">
+        <i class="fa fa-inverse">简</i>
     </a>
 
 
@@ -502,7 +470,6 @@ $('.bg-cover').css('background-image', 'url(/medias/banner/' + new Date().getDay
     </a>
 
 
-
 </div>
     </div>
 </footer>
@@ -516,7 +483,7 @@ $('.bg-cover').css('background-image', 'url(/medias/banner/' + new Date().getDay
         <div class="search-header">
             <span class="title"><i class="fa fa-search"></i>&nbsp;&nbsp;搜索</span>
             <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
-                   class="search-input" autofocus="">
+                   class="search-input">
         </div>
         <div id="searchResult"></div>
     </div>
@@ -524,7 +491,9 @@ $('.bg-cover').css('background-image', 'url(/medias/banner/' + new Date().getDay
 
 <script src="/js/search.js"></script>
 <script type="text/javascript">
+$(function () {
     searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+});
 </script>
 <!-- 回到顶部按钮 -->
 <div id="backTop" class="top-scroll">
@@ -534,7 +503,7 @@ $('.bg-cover').css('background-image', 'url(/medias/banner/' + new Date().getDay
 </div>
 
 
-<script src="/libs/materialize/js/materialize.min.js"></script>
+<script src="/libs/materialize/materialize.min.js"></script>
 <script src="/libs/masonry/masonry.pkgd.min.js"></script>
 <script src="/libs/aos/aos.js"></script>
 <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
