@@ -421,8 +421,8 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h3 id="场景重现"><a href="#场景重现" class="headerlink" title="场景重现"></a>场景重现</h3><p>最近遇到一个问题，在<code>K8S</code>的几台机器上中创建了<code>Glusterfs</code>的集群，通过官方的教程一步步的来利用<code>Glusterfs</code>创建<code>Volume</code>以及<code>PV</code>，不过只是创建了每个<code>Volume</code>的<code>Endpoint</code>，并没有相对应的创建<code>Service</code>实例（官方说创建<code>Service</code>会使<code>Endpoint</code>持久化，当时并没有理会），然后在一次集群重启的时候发现<code>Endpoint</code>实例并没有启动起来，很疑惑，像其他的<code>K8S</code>对象，例如<code>POD</code>，<code>Deployment</code>，<code>Service</code>都启动起来了，但是<code>Endpoint</code>并没有，带着这个问题看了下官方的<code>Issue</code>，并没有什么有效的解答，大家可以参考一下<a href="[https://github.com/kubernetes/kubernetes/issues/12964](https://github.com/kubernetes/kubernetes/issues/12964)">Issue: <a href="https://github.com/kubernetes/kubernetes/issues/12964" target="_blank" rel="noopener">Endpoints are not persistented</a>
-</a></p>
+                <h3 id="场景重现"><a href="#场景重现" class="headerlink" title="场景重现"></a>场景重现</h3><p>最近遇到一个问题，在<code>K8S</code>的几台机器上中创建了<code>Glusterfs</code>的集群，通过官方的教程一步步的来利用<code>Glusterfs</code>创建<code>Volume</code>以及<code>PV</code>，不过只是创建了每个<code>Volume</code>的<code>Endpoint</code>，并没有相对应的创建<code>Service</code>实例（官方说创建<code>Service</code>会使<code>Endpoint</code>持久化，当时并没有理会），然后在一次集群重启的时候发现<code>Endpoint</code>实例并没有启动起来，很疑惑，像其他的<code>K8S</code>对象，例如<code>POD</code>，<code>Deployment</code>，<code>Service</code>都启动起来了，但是<code>Endpoint</code>并没有，带着这个问题看了下官方的<code>Issue</code>，并没有什么有效的解答，大家可以参考一下<a href="[https://github.com/kubernetes/kubernetes/issues/12964](https://github.com/kubernetes/kubernetes/issues/12964)">Issue: </a><a href="https://github.com/kubernetes/kubernetes/issues/12964" target="_blank" rel="noopener">Endpoints are not persistented</a>
+</p>
 <h3 id="1-探究源码"><a href="#1-探究源码" class="headerlink" title="1. 探究源码"></a>1. 探究源码</h3><h4 id="1-1-源码版本"><a href="#1-1-源码版本" class="headerlink" title="1.1 源码版本"></a>1.1 源码版本</h4><ul>
 <li>基于k8s release-1.13</li>
 </ul>
@@ -632,7 +632,7 @@ func NewEndpointController(podInformer coreinformers.PodInformer, serviceInforme
 <pre><code>func (e *EndpointController) syncService(key string) error {
     startTime := time.Now()
     defer func() {
-        klog.V(4).Infof(&quot;Finished syncing service %q endpoints. (%v)&quot;, key, time.Since(startTime))
+        klog.V(4).Infof("Finished syncing service %q endpoints. (%v)", key, time.Since(startTime))
     }()
  // 根据key获取service的namespace和name
     namespace, name, err := cache.SplitMetaNamespaceKey(key)
@@ -644,9 +644,9 @@ func NewEndpointController(podInformer coreinformers.PodInformer, serviceInforme
  // 如果service已经被删除，则也要删除对用的endpoint资源
         // Delete the corresponding endpoint, as the service has been deleted.
         // TODO: Please note that this will delete an endpoint when a
-        // service is deleted. However, if we&#39;re down at the time when
+        // service is deleted. However, if we're down at the time when
         // the service is deleted, we will miss that deletion, so this
-        // doesn&#39;t completely solve the problem. See #6877.
+        // doesn't completely solve the problem. See #6877.
         err = e.client.CoreV1().Endpoints(namespace).Delete(name, nil)
         if err != nil &amp;&amp; !errors.IsNotFound(err) {
             return err
@@ -661,10 +661,10 @@ func NewEndpointController(podInformer coreinformers.PodInformer, serviceInforme
         return nil
     }
 
-    klog.V(5).Infof(&quot;About to update endpoints for service %q&quot;, key)
+    klog.V(5).Infof("About to update endpoints for service %q", key)
     pods, err := e.podLister.Pods(service.Namespace).List(labels.Set(service.Spec.Selector).AsSelectorPreValidated())
     if err != nil {
-        // Since we&#39;re getting stuff from a local cache, it is
+        // Since we're getting stuff from a local cache, it is
         // basically impossible to get this error.
         return err
     }
@@ -677,12 +677,12 @@ func NewEndpointController(podInformer coreinformers.PodInformer, serviceInforme
         if err == nil {
             tolerateUnreadyEndpoints = b
         } else {
-            utilruntime.HandleError(fmt.Errorf(&quot;Failed to parse annotation %v: %v&quot;, TolerateUnreadyEndpointsAnnotation, err))
+            utilruntime.HandleError(fmt.Errorf("Failed to parse annotation %v: %v", TolerateUnreadyEndpointsAnnotation, err))
         }
     }
 
     // We call ComputeEndpointsLastChangeTriggerTime here to make sure that the state of the trigger
-    // time tracker gets updated even if the sync turns out to be no-op and we don&#39;t update the
+    // time tracker gets updated even if the sync turns out to be no-op and we don't update the
     // endpoints object.
     endpointsLastChangeTriggerTime := e.triggerTimeTracker.
         ComputeEndpointsLastChangeTriggerTime(namespace, name, service, pods)
@@ -694,13 +694,13 @@ func NewEndpointController(podInformer coreinformers.PodInformer, serviceInforme
     for _, pod := range pods {
         // pod的podIp为空，则continue for循环
         if len(pod.Status.PodIP) == 0 {
-            klog.V(5).Infof(&quot;Failed to find an IP for pod %s/%s&quot;, pod.Namespace, pod.Name)
+            klog.V(5).Infof("Failed to find an IP for pod %s/%s", pod.Namespace, pod.Name)
             continue
         }
         // 如果该pod正在被删除，则continue for循环
         if !tolerateUnreadyEndpoints &amp;&amp; pod.DeletionTimestamp != nil {
  // 获取该pod的信息，输出EndpointAddress结构体变量
-            klog.V(5).Infof(&quot;Pod is being deleted %s/%s&quot;, pod.Namespace, pod.Name)
+            klog.V(5).Infof("Pod is being deleted %s/%s", pod.Namespace, pod.Name)
             continue
         }
 
@@ -731,7 +731,7 @@ func NewEndpointController(podInformer coreinformers.PodInformer, serviceInforme
                 portNum, err := podutil.FindPort(pod, servicePort)
                 // 如果service中的port在pod中不存在，则继续for循环
                 if err != nil {
-                    klog.V(4).Infof(&quot;Failed to find port for service %s/%s: %v&quot;, service.Namespace, service.Name, err)
+                    klog.V(4).Infof("Failed to find port for service %s/%s: %v", service.Namespace, service.Name, err)
                     continue
                 }
 
@@ -746,7 +746,7 @@ func NewEndpointController(podInformer coreinformers.PodInformer, serviceInforme
     // 重新整理subsets
     subsets = endpoints.RepackSubsets(subsets)
     // 如果endpoint不存在(通常该情况是新建一个service的情况)，则新建一个，如果是其他未知错误，则返回err
-    // See if there&#39;s actually an update here.
+    // See if there's actually an update here.
     currentEndpoints, err := e.endpointsLister.Endpoints(service.Namespace).Get(service.Name)
     if err != nil {
         if errors.IsNotFound(err) {
@@ -766,7 +766,7 @@ func NewEndpointController(podInformer coreinformers.PodInformer, serviceInforme
     if !createEndpoints &amp;&amp;
         apiequality.Semantic.DeepEqual(currentEndpoints.Subsets, subsets) &amp;&amp;
         apiequality.Semantic.DeepEqual(currentEndpoints.Labels, service.Labels) {
-        klog.V(5).Infof(&quot;endpoints are equal for %s/%s, skipping update&quot;, service.Namespace, service.Name)
+        klog.V(5).Infof("endpoints are equal for %s/%s, skipping update", service.Namespace, service.Name)
         return nil
     }
     newEndpoints := currentEndpoints.DeepCopy()
@@ -783,7 +783,7 @@ func NewEndpointController(podInformer coreinformers.PodInformer, serviceInforme
         delete(newEndpoints.Annotations, v1.EndpointsLastChangeTriggerTime)
     }
 
-    klog.V(4).Infof(&quot;Update endpoints for %v/%v, ready: %d not ready: %d&quot;, service.Namespace, service.Name, totalReadyEps, totalNotReadyEps)
+    klog.V(4).Infof("Update endpoints for %v/%v, ready: %d not ready: %d", service.Namespace, service.Name, totalReadyEps, totalNotReadyEps)
     if createEndpoints {
         // 如果没有与service同命名空间和同名的endpoint，则生成新的endpoint
         // No previous endpoints, create them
@@ -799,13 +799,13 @@ func NewEndpointController(podInformer coreinformers.PodInformer, serviceInforme
             // 1. namespace is terminating, endpoint creation is not allowed by default.
             // 2. policy is misconfigured, in which case no service would function anywhere.
             // Given the frequency of 1, we log at a lower level.
-            klog.V(5).Infof(&quot;Forbidden from creating endpoints: %v&quot;, err)
+            klog.V(5).Infof("Forbidden from creating endpoints: %v", err)
         }
 
         if createEndpoints {
-            e.eventRecorder.Eventf(newEndpoints, v1.EventTypeWarning, &quot;FailedToCreateEndpoint&quot;, &quot;Failed to create endpoint for service %v/%v: %v&quot;, service.Namespace, service.Name, err)
+            e.eventRecorder.Eventf(newEndpoints, v1.EventTypeWarning, "FailedToCreateEndpoint", "Failed to create endpoint for service %v/%v: %v", service.Namespace, service.Name, err)
         } else {
-            e.eventRecorder.Eventf(newEndpoints, v1.EventTypeWarning, &quot;FailedToUpdateEndpoint&quot;, &quot;Failed to update endpoint %v/%v: %v&quot;, service.Namespace, service.Name, err)
+            e.eventRecorder.Eventf(newEndpoints, v1.EventTypeWarning, "FailedToUpdateEndpoint", "Failed to update endpoint %v/%v: %v", service.Namespace, service.Name, err)
         }
 
         return err
@@ -854,7 +854,25 @@ func NewEndpointController(podInformer coreinformers.PodInformer, serviceInforme
 <li>创建<code>Service</code>的时候使用<code>Selector</code>，这样可以自动创建<code>Endpoint</code></li>
 <li>在创建<code>Endpoint</code>还需要创建<code>Service</code>，这样才可以持久化<code>Endpoint</code></li>
 </ol>
-
+<script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script>
             </div>
             <hr/>
 

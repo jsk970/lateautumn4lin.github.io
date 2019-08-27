@@ -458,9 +458,9 @@ Transfer-Encoding: chunked
 Date: Thu, 02 Jan 2019 20:22:59 GMT
 Transfer-Encoding: chunked
 
-{&quot;type&quot;:&quot;ADDED&quot;, &quot;object&quot;:{&quot;kind&quot;:&quot;Pod&quot;,&quot;apiVersion&quot;:&quot;v1&quot;,...}}
-{&quot;type&quot;:&quot;ADDED&quot;, &quot;object&quot;:{&quot;kind&quot;:&quot;Pod&quot;,&quot;apiVersion&quot;:&quot;v1&quot;,...}}
-{&quot;type&quot;:&quot;MODIFIED&quot;, &quot;object&quot;:{&quot;kind&quot;:&quot;Pod&quot;,&quot;apiVersion&quot;:&quot;v1&quot;,...}}</code></pre><h3 id="4-谈谈-List-Watch-的设计理念"><a href="#4-谈谈-List-Watch-的设计理念" class="headerlink" title="4. 谈谈 List-Watch 的设计理念"></a>4. 谈谈 List-Watch 的设计理念</h3><p>当设计优秀的一个异步消息的系统时，对<code>消息机制</code>有至少如下四点要求：</p>
+{"type":"ADDED", "object":{"kind":"Pod","apiVersion":"v1",...}}
+{"type":"ADDED", "object":{"kind":"Pod","apiVersion":"v1",...}}
+{"type":"MODIFIED", "object":{"kind":"Pod","apiVersion":"v1",...}}</code></pre><h3 id="4-谈谈-List-Watch-的设计理念"><a href="#4-谈谈-List-Watch-的设计理念" class="headerlink" title="4. 谈谈 List-Watch 的设计理念"></a>4. 谈谈 List-Watch 的设计理念</h3><p>当设计优秀的一个异步消息的系统时，对<code>消息机制</code>有至少如下四点要求：</p>
 <ul>
 <li>消息可靠性</li>
 <li>消息实时性</li>
@@ -509,7 +509,25 @@ Transfer-Encoding: chunked
 <li><p>LocalStore 会周期性地把所有的 Pod 信息重新放到 DeltaFIFO 中</p>
 </li>
 </ol>
-
+<script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script>
             </div>
             <hr/>
 
