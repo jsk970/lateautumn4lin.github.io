@@ -4,9 +4,8 @@
 
 <head><meta name="generator" content="Hexo 3.9.0">
     <meta charset="utf-8">
-    <meta name="keywords" content="理解K8S的设计精髓之List-Watch机制和Informer模块, 云爬虫技术研究笔记">
-    <meta name="description" content="1. 前言最近想深入了解一下K8S的内部通信机制，因此读了几遍K8S的源码，感慨很深。至今清楚的记得，当了解到K8S 组件之间仅采用HTTP 协议通信，没有依赖中间件时，我非常好奇它是如何做到的。
-在K8S 内部通信中，肯定要保证消息的实时">
+    <meta name="keywords" content="Git生态探索之Commit message和Change log编写最佳实践, 云爬虫技术研究笔记">
+    <meta name="description" content="背景最近在学习规范如何使用git来更高效的开发，发现一个比较好用的来规范comment的工具，所以想来记录一下。一般来说，commit message 应该清晰明了，说明本次提交的目的。所以需要一些规范来使这些comment变得可读，com">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -14,7 +13,7 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>理解K8S的设计精髓之List-Watch机制和Informer模块 | 云爬虫技术研究笔记</title>
+    <title>Git生态探索之Commit message和Change log编写最佳实践 | 云爬虫技术研究笔记</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
@@ -262,13 +261,13 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/4.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/16.jpg')">
     <div class="container">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
                     <div class="description center-align post-title">
-                        理解K8S的设计精髓之List-Watch机制和Informer模块
+                        Git生态探索之Commit message和Change log编写最佳实践
                     </div>
                 </div>
             </div>
@@ -379,16 +378,12 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/K8S/" target="_blank">
-                                <span class="chip bg-color">K8S</span>
+                            <a href="/tags/Git/" target="_blank">
+                                <span class="chip bg-color">Git</span>
                             </a>
                         
-                            <a href="/tags/Go/" target="_blank">
-                                <span class="chip bg-color">Go</span>
-                            </a>
-                        
-                            <a href="/tags/List-Watch/" target="_blank">
-                                <span class="chip bg-color">List-Watch</span>
+                            <a href="/tags/最佳实践/" target="_blank">
+                                <span class="chip bg-color">最佳实践</span>
                             </a>
                         
                     </div>
@@ -399,8 +394,8 @@
                     <div class="post-cate">
                         <i class="fa fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/解读K8S源码/" class="post-category" target="_blank">
-                                解读K8S源码
+                            <a href="/categories/Git生态探索/" class="post-category" target="_blank">
+                                Git生态探索
                             </a>
                         
                     </div>
@@ -427,89 +422,93 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h3 id="1-前言"><a href="#1-前言" class="headerlink" title="1. 前言"></a>1. 前言</h3><p>最近想深入了解一下<code>K8S</code>的内部通信机制，因此读了几遍<code>K8S</code>的源码，感慨很深。至今清楚的记得，当了解到<code>K8S</code> 组件之间仅采用<code>HTTP 协议</code>通信，没有依赖<code>中间件</code>时，我非常好奇它是如何做到的。</p>
-<p>在<code>K8S</code> 内部通信中，肯定要保证消息的实时性。之前以为方式有两种：</p>
-<ol>
-<li>客户端组件(<code>kubelet</code>, <code>scheduler</code>, <code>controller-manager</code> 等)轮询 apiserver，</li>
-<li><code>apiserver</code> 通知客户端。<br>如果采用<code>轮询</code>，势必会大大增加 <code>apiserver</code>的压力，同时实时性很低。<br>如果 <code>apiserver</code> 主动发<code>HTTP</code> 请求，又如何保证消息的可靠性，以及大量端口占用问题？</li>
-</ol>
-<p>当阅读完 <code>list-watch</code> 源码后，先是所有的疑惑云开雾散，进而为<code>K8S</code>的<code>设计理念</code>所折服。<code>List-watch</code> 是 <code>K8S</code> 统一的异步消息处理机制，保证了消息的实时性，可靠性，顺序性，性能等等，为声明式风格的<code>API</code> 奠定了良好的基础，它是优雅的通信方式，是 <code>K8S 架构</code>的精髓。</p>
-<h3 id="2-List-Watch-机制具体是什么样的"><a href="#2-List-Watch-机制具体是什么样的" class="headerlink" title="2. List-Watch 机制具体是什么样的"></a>2. List-Watch 机制具体是什么样的</h3><p><code>Etcd</code>存储集群的数据信息，<code>apiserver</code>作为统一入口，任何对数据的操作都必须经过 <code>apiserver</code>。客户端(<code>kubelet</code>/<code>scheduler</code>/<code>controller-manager</code>)通过 <code>list-watch</code> 监听 <code>apiserver</code> 中资源(<code>pod/rs/rc</code>等等)的 <code>create</code>, <code>update</code> 和 <code>delete</code> 事件，并针对<code>事件类型</code>调用相应的<code>事件处理函数</code>。</p>
-<p>那么<code>list-watch</code> 具体是什么呢，顾名思义，<code>list-watch</code>有两部分组成，分别是<code>list</code>和 <code>watch</code>。<code>list</code> 非常好理解，就是调用资源的<code>list API</code>罗列资源，基于<code>HTTP</code>短链接<code>实现；</code>watch<code>则是调用资源的</code>watch API<code>监听资源变更事件，基于</code>HTTP 长链接<code>实现，也是本文重点分析的对象。以</code> pod 资源<code>为例，它的</code> list <code>和</code>watch API <code>分别为：
-[List API](https://v1-10.docs.kubernetes.io/docs/reference/generated/kubernetes-api/v1.10/#list-all-namespaces-63)，返回值为 [PodList](https://v1-10.docs.kubernetes.io/docs/reference/generated/kubernetes-api/v1.10/#podlist-v1-core)，即一组</code> pod`。</p>
-<blockquote>
-<p>GET /api/v1/pods</p>
-</blockquote>
-<p><a href="https://v1-10.docs.kubernetes.io/docs/reference/generated/kubernetes-api/v1.10/#watch-list-all-namespaces-66" target="_blank" rel="noopener">Watch API</a>，往往带上 <code>watch=true</code>，表示采用 <code>HTTP 长连接</code>持续监听 <code>pod 相关事件</code>，每当有事件来临，返回一个 <a href="https://v1-10.docs.kubernetes.io/docs/reference/generated/kubernetes-api/v1.10/#watchevent-v1-meta" target="_blank" rel="noopener">WatchEvent</a>。</p>
-<blockquote>
-<p>GET /api/v1/watch/pods</p>
-</blockquote>
-<p><code>K8S</code> 的<code>informer</code> 模块封装 <code>list-watch API</code>，用户只需要指定资源，编写事件处理函数，<code>AddFunc</code>, <code>UpdateFunc</code>和 <code>DeleteFunc</code>等。如下图所示，<code>informer</code>首先通过<code>list API</code> 罗列资源，然后调用 <code>watch API</code>监听资源的变更事件，并将结果放入到一个 <code>FIFO 队列</code>，队列的另一头有协程从中取出事件，并调用对应的注册函数处理事件。<code>Informer</code>还维护了一个只读的<code>Map Store</code> 缓存，主要为了提升查询的效率，降低<code>apiserver</code> 的负载。</p>
-<p><img src="https://upload-images.jianshu.io/upload_images/3029445-8326e103c0216c83.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="listwatch.png"></p>
-<h3 id="3-Watch-是如何实现的"><a href="#3-Watch-是如何实现的" class="headerlink" title="3.Watch 是如何实现的"></a>3.Watch 是如何实现的</h3><p><code>List</code>的实现容易理解，那么 <code>Watch</code> 是如何实现的呢？<code>Watch</code>是如何通过 <code>HTTP 长链接</code>接收<code>apiserver</code>发来的<code>资源变更事件</code>呢？</p>
-<p>秘诀就是 <a href="https://zh.wikipedia.org/zh-hans/%E5%88%86%E5%9D%97%E4%BC%A0%E8%BE%93%E7%BC%96%E7%A0%81" target="_blank" rel="noopener">Chunked transfer encoding(分块传输编码)</a>，它首次出现在<code>HTTP/1.1</code>。正如维基百科所说：</p>
-<blockquote>
-<p>HTTP 分块传输编码允许服务器为动态生成的内容维持 HTTP 持久链接。通常，持久链接需要服务器在开始发送消息体前发送Content-Length消息头字段，但是对于动态生成的内容来说，在内容创建完之前是不可知的。使用分块传输编码，数据分解成一系列数据块，并以一个或多个块发送，这样服务器可以发送数据而不需要预先知道发送内容的总大小。</p>
-</blockquote>
-<p>当客户端调用 <code>watch API</code> 时，<code>apiserve</code>r 在<code>response</code> 的 <code>HTTP Header</code> 中设置 <code>Transfer-Encoding</code>的值为<code>chunked</code>，表示采用<code>分块传输</code>编码，客户端收到该信息后，便和服务端该链接，并等待下一个数据块，即资源的事件信息。例如：</p>
-<pre><code>$ curl -i http://{kube-api-server-ip}:8080/api/v1/watch/pods?watch=yes
-HTTP/1.1 200 OK
-Content-Type: application/json
-Transfer-Encoding: chunked
-Date: Thu, 02 Jan 2019 20:22:59 GMT
-Transfer-Encoding: chunked
+                <h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>最近在学习规范如何使用<code>git</code>来更高效的开发，发现一个比较好用的来规范<code>comment</code>的工具，所以想来记录一下。一般来说，<code>commit message</code> 应该清晰明了，说明本次提交的目的。所以需要一些规范来使这些<code>comment</code>变得可读，<code>commitizen</code>则是最近发现的一款比较易用的工具。</p>
+<p><code>git</code>的提交一般的初学者都会使用<code>git commit -m "hello world"</code>来提交<code>comment</code>，但是一些像<code>hello world</code>这样没有意义的<code>comment</code>让人无法理解这次的提交到底是为了什么，所以我们就要规范一下<code>comment</code>的规范了。</p>
+<pre><code>PS:下面是一些基础介绍如果大佬请直接查看第二部分</code></pre><h1 id="1-commit-message-format-信息域"><a href="#1-commit-message-format-信息域" class="headerlink" title="1. commit message format(信息域)"></a>1. commit message format(信息域)</h1><p><em><em>commit message一般分为三个部分</em>Header，Body 和 Footer</em></p>
+<pre><code>&lt;type&gt;(&lt;scope&gt;): &lt;subject&gt;
+// 空一行
+&lt;body&gt;
+// 空一行
+&lt;footer&gt;
+其中，Header 是必需的，Body 和 Footer 可以省略
 
-{"type":"ADDED", "object":{"kind":"Pod","apiVersion":"v1",...}}
-{"type":"ADDED", "object":{"kind":"Pod","apiVersion":"v1",...}}
-{"type":"MODIFIED", "object":{"kind":"Pod","apiVersion":"v1",...}}</code></pre><h3 id="4-谈谈-List-Watch-的设计理念"><a href="#4-谈谈-List-Watch-的设计理念" class="headerlink" title="4. 谈谈 List-Watch 的设计理念"></a>4. 谈谈 List-Watch 的设计理念</h3><p>当设计优秀的一个异步消息的系统时，对<code>消息机制</code>有至少如下四点要求：</p>
-<ul>
-<li>消息可靠性</li>
-<li>消息实时性</li>
-<li>消息顺序性</li>
-<li>高性能</li>
+Example:
+PS D:\git\pythonPractice&gt; git log
+commit 58a7a966acb9aa2fffc0e02c9ce3be64b8949991 (HEAD -&gt; master)
+Author: Zhiwei Tian &lt;hebeitianzhiwei@outlook.com&gt;
+Date:   Fri Aug 17 17:38:36 2018 +0800
+
+    feat(serve): add grpc server
+</code></pre><hr>
+<h2 id="1-1-HEAD"><a href="#1-1-HEAD" class="headerlink" title="1.1 HEAD"></a>1.1 HEAD</h2><ul>
+<li><code>type</code>用于说明 <code>commit</code> 的类别，只允许使用下面7个标识</li>
 </ul>
-<p>首先<code>消息</code>必须是<code>可靠</code>的，<code>list</code> 和 <code>watch</code> 一起保证了消息的可靠性，避免因消息丢失而造成状态不一致场景。具体而言，<code>list API</code>可以查询当前的资源及其对应的状态(即期望的状态)，客户端通过拿<code>期望的状态</code>和<code>实际的状态</code>进行对比，纠正状态不一致的资源。<code>Watch API</code> 和 <code>apiserver</code>保持一个<code>长链接</code>，接收资源的<code>状态变更事件</code>并做相应处理。如果仅调用 <code>watch API</code>，若某个时间点连接中断，就有可能导致消息丢失，所以需要通过<code>list API</code>解决<code>消息丢失</code>的问题。从另一个角度出发，我们可以认为<code>list API</code>获取全量数据，<code>watch API</code>获取增量数据。虽然仅仅通过轮询 <code>list API</code>，也能达到同步资源状态的效果，但是存在开销大，实时性不足的问题。</p>
-<p>消息必须是实时的，<code>list-watch</code> 机制下，每当<code>apiserver</code> 的资源产生<code>状态变更事件</code>，都会将事件及时的推送给客户端，从而保证了<code>消息的实时性</code>。</p>
-<p>消息的顺序性也是非常重要的，在并发的场景下，客户端在短时间内可能会收到同一个资源的多个事件，对于<code>关注最终一致性</code>的 <code>K8S</code> 来说，它需要知道哪个是最近发生的事件，并保证资源的最终状态如同最近事件所表述的状态一样。<code>K8S</code> 在每个资源的事件中都带一个 <code>resourceVersion</code>的标签，这个标签是递增的数字，所以当客户端并发处理同一个资源的事件时，它就可以对比 <code>resourceVersion</code>来保证最终的状态和最新的事件所期望的状态保持一致。</p>
-<p><code>List-watch</code> 还具有高性能的特点，虽然仅通过周期性调用<code>list API</code>也能达到资源最终一致性的效果，但是周期性频繁的轮询大大的增大了开销，增加<code>apiserver</code>的压力。而<code>watch</code> 作为异步消息通知机制，复用一条长链接，保证实时性的同时也保证了性能。</p>
-<h3 id="5-Informer介绍"><a href="#5-Informer介绍" class="headerlink" title="5. Informer介绍"></a>5. Informer介绍</h3><p><code>Informer</code> 是 <code>Client-go</code> 中的一个核心工具包。在<code>Kubernetes</code>源码中，如果 <code>Kubernetes</code> 的某个组件，需要 <code>List/Get Kubernetes</code> 中的 <code>Object</code>，在绝大多 数情况下，会直接使用<code>Informer</code>实例中的<code>Lister()</code>方法（该方法包含 了 Get 和 List 方法），而很少直接请求<code>Kubernetes API</code>。<code>Informer</code> 最基本 的功能就是<code>List/Get Kubernetes</code>中的 <code>Object</code>。</p>
-<p>如下图所示，仅需要十行左右的代码就能实现对<code>Pod</code>的<code>List</code> 和 <code>Get</code>。</p>
-<p><img src="https://upload-images.jianshu.io/upload_images/3029445-55898dffcef103e3.jpeg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="informar.jpeg"></p>
-<h3 id="6-Informer-设计思路"><a href="#6-Informer-设计思路" class="headerlink" title="6. Informer 设计思路"></a>6. Informer 设计思路</h3><h4 id="6-1-Informer-设计中的关键点"><a href="#6-1-Informer-设计中的关键点" class="headerlink" title="6.1 Informer 设计中的关键点"></a>6.1 Informer 设计中的关键点</h4><p>为了让<code>Client-go</code> 更快地返回<code>List/Get</code>请求的结果、减少对 <code>Kubenetes API</code>的直接调用，<code>Informer</code> 被设计实现为一个依赖<code>Kubernetes List/Watch API</code>、<code>可监听事件并触发回调函数</code>的<code>二级缓存</code>工具包。</p>
-<h4 id="6-2-更快地返回-List-Get-请求，减少对-Kubenetes-API-的直接调用"><a href="#6-2-更快地返回-List-Get-请求，减少对-Kubenetes-API-的直接调用" class="headerlink" title="6.2 更快地返回 List/Get 请求，减少对 Kubenetes API 的直接调用"></a>6.2 更快地返回 List/Get 请求，减少对 Kubenetes API 的直接调用</h4><p>使用<code>Informer</code>实例的<code>Lister()</code>方法，<code>List/Get Kubernetes</code> 中的 <code>Object</code>时，<code>Informer</code>不会去请求<code>Kubernetes API</code>，而是直接查找<code>缓存</code>在本地内存中的数据(这份数据由<code>Informer</code>自己维护)。通过这种方式，<code>Informer</code>既可以更快地返回结果，又能减少对 <code>Kubernetes API</code> 的直接调用。</p>
-<h4 id="6-3-依赖-Kubernetes-List-Watch-API"><a href="#6-3-依赖-Kubernetes-List-Watch-API" class="headerlink" title="6.3 依赖 Kubernetes List/Watch API"></a>6.3 依赖 Kubernetes List/Watch API</h4><p><code>Informer</code> 只会调用<code>Kubernetes List</code> 和 <code>Watch</code>两种类型的 <code>API</code>。<code>Informer</code>在初始化的时，先调用<code>Kubernetes List API</code> 获得某种 <code>resource</code>的全部<code>Object</code>，缓存在<code>内存</code>中; 然后，调用 <code>Watch API</code> 去<code>watch</code>这种<code>resource</code>，去维护这份缓存; 最后，<code>Informer</code>就不再调用<code>Kubernetes</code>的任何 API。</p>
-<p>用<code>List/Watch</code>去维护缓存、保持一致性是非常典型的做法，但令人费解的是，<code>Informer</code> 只在初始化时调用一次<code>List API</code>，之后完全依赖 <code>Watch API</code>去维护缓存，没有任何<code>resync</code>机制。</p>
-<p>笔者在阅读<code>Informer</code>代码时候，对这种做法十分不解。按照多数人思路，通过 <code>resync</code>机制，重新<code>List</code>一遍 <code>resource</code>下的所有<code>Object</code>，可以更好的保证 <code>Informer 缓存</code>和 <code>Kubernetes</code> 中数据的一致性。</p>
-<p>咨询过<code>Google</code> 内部 <code>Kubernetes</code>开发人员之后，得到的回复是:</p>
-<p>在 <code>Informer</code> 设计之初，确实存在一个<code>relist</code>无法去执 <code>resync</code>操作， 但后来被取消了。原因是现有的这种 <code>List/Watch</code> 机制，完全能够保证永远不会漏掉任何事件，因此完全没有必要再添加<code>relist</code>方法去<code>resync informer</code>的缓存。这种做法也说明了<code>Kubernetes</code>完全信任<code>etcd</code>。</p>
-<h4 id="6-4-可监听事件并触发回调函数"><a href="#6-4-可监听事件并触发回调函数" class="headerlink" title="6.4 可监听事件并触发回调函数"></a>6.4 可监听事件并触发回调函数</h4><p><code>Informer</code>通过<code>Kubernetes Watch API</code>监听某种 <code>resource</code>下的所有事件。而且，<code>Informer</code>可以添加自定义的回调函数，这个回调函数实例(即 <code>ResourceEventHandler</code> 实例)只需实现 <code>OnAdd</code>(obj interface{}) <code>OnUpdate</code>(oldObj, newObj interface{}) 和<code>OnDelete</code>(obj interface{}) 三个方法，这三个方法分别对应<code>informer</code>监听到<code>创建</code>、<code>更新</code>和<code>删除</code>这三种事件类型。</p>
-<p>在<code>Controller</code>的设计实现中，会经常用到 <code>informer</code>的这个功能。</p>
-<h4 id="6-5-二级缓存"><a href="#6-5-二级缓存" class="headerlink" title="6.5 二级缓存"></a>6.5 二级缓存</h4><p>二级缓存属于 <code>Informer</code>的底层缓存机制，这两级缓存分别是<code>DeltaFIFO</code>和 <code>LocalStore</code>。</p>
-<p>这两级缓存的用途各不相同。<code>DeltaFIFO</code>用来存储<code>Watch API</code>返回的各种事件 ，<code>LocalStore</code> 只会被<code>Lister</code>的<code>List/Get</code>方法访问 。</p>
-<p>虽然<code>Informer</code>和 <code>Kubernetes</code> 之间没有<code>resync</code>机制，但<code>Informer</code>内部的这两级缓存之间存在<code>resync</code> 机制。</p>
-<h4 id="6-6-关键逻辑介绍"><a href="#6-6-关键逻辑介绍" class="headerlink" title="6.6 关键逻辑介绍"></a>6.6 关键逻辑介绍</h4><p><img src="https://upload-images.jianshu.io/upload_images/3029445-df5ccf0817266fdb.jpeg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="1.jpeg"></p>
-<p><img src="https://upload-images.jianshu.io/upload_images/3029445-818499c747eb2550.jpeg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="2.jpeg"></p>
-<p><img src="https://upload-images.jianshu.io/upload_images/3029445-2420d7f16b85e554.jpeg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="3.jpeg"></p>
+<pre><code>feat：新功能（feature）
+fix：修补bug
+docs：文档（documentation）
+style： 格式（不影响代码运行的变动）
+refactor：重构（即不是新增功能，也不是修改bug的代码变动）
+test：增加测试
+chore：构建过程或辅助工具的变动
+</code></pre><ul>
+<li><code>scope</code> 用来说明本次Commit影响的范围，即简要说明修改会涉及的部分,比如数据层、控制层、视图层等,</li>
+<li><code>subject</code>comment所在的位置,这次提交的简短描述</li>
+</ul>
+<hr>
+<h2 id="1-2-Body-是对本次-commit-的详细描述，可以分成多行"><a href="#1-2-Body-是对本次-commit-的详细描述，可以分成多行" class="headerlink" title="1.2 Body 是对本次 commit 的详细描述，可以分成多行"></a>1.2 Body 是对本次 commit 的详细描述，可以分成多行</h2><h2 id="1-3-Footer-部分只用于两种情况"><a href="#1-3-Footer-部分只用于两种情况" class="headerlink" title="1.3 Footer 部分只用于两种情况"></a>1.3 Footer 部分只用于两种情况</h2><ul>
+<li>不兼容变动</li>
+</ul>
+<blockquote>
+<p>如果当前代码与上一个版本不兼容，则 <code>Footer</code> 部分以<code>BREAKING CHANGE</code>开头，后面是对变动的描述、以及变动理由和迁移方法</p>
+</blockquote>
+<ul>
+<li>关闭 Issue</li>
+</ul>
+<blockquote>
+<p>如果当前 commit 针对某个issue，那么可以在 Footer 部分关闭这个 issue (可依次关闭过个issue<code>Closes #123, #245, #992</code>)</p>
+</blockquote>
+<h2 id="1-4-Revert"><a href="#1-4-Revert" class="headerlink" title="1.4 Revert"></a>1.4 Revert</h2><p>还有一种特殊情况，如果当前 commit 用于撤销以前的 commit，则必须以revert:开头，后面跟着被撤销 Commit 的 Header</p>
+<pre><code>revert: type(scope):  some comment
+This reverts commit bfe307ce57d87677c6c473c228e6c2ed8b81dcec.
+</code></pre><p>Body部分的格式是固定的，必须写成<code>This reverts commit &amp;lt;hash&gt;.</code>，其中的hash是被撤销 commit 的 <code>HSHA</code> 标识符。<br>如果当前 commit 与被撤销的 commit，在同一个发布（release）里面，那么它们都不会出现在 Change log 里面。如果两者在不同的发布，那么当前 commit，会出现在 Change log 的Reverts小标题下面</p>
+<h1 id="2-使用commitizen来执行规范"><a href="#2-使用commitizen来执行规范" class="headerlink" title="2. 使用commitizen来执行规范"></a>2. 使用commitizen来执行规范</h1><p>因为<code>commitizen</code>是<code>node</code>的模块，所以前提需要安装<a href="https://nodejs.org/zh-cn/" target="_blank" rel="noopener">node</a>(官网下载地址)</p>
 <ol>
-<li><p>Informer 在初始化时，Reflector 会先 List API 获得所有的 Pod</p>
-</li>
-<li><p>Reflect 拿到全部 Pod 后，会将全部 Pod 放到 Store 中</p>
-</li>
-<li><p>如果有人调用 Lister 的 List/Get 方法获取 Pod， 那么 Lister 会直接从 Store 中拿数据</p>
-</li>
-<li><p>Informer 初始化完成之后，Reflector 开始 Watch Pod，监听 Pod 相关 的所有事件;如果此时 pod_1 被删除，那么 Reflector 会监听到这个事件</p>
-</li>
-<li><p>Reflector 将 pod_1 被删除 的这个事件发送到 DeltaFIFO</p>
-</li>
-<li><p>DeltaFIFO 首先会将这个事件存储在自己的数据结构中(实际上是一个 queue)，然后会直接操作 Store 中的数据，删除 Store 中的 pod_1</p>
-</li>
-<li><p>DeltaFIFO 再 Pop 这个事件到 Controller 中</p>
-</li>
-<li><p>Controller 收到这个事件，会触发 Processor 的回调函数</p>
-</li>
-<li><p>LocalStore 会周期性地把所有的 Pod 信息重新放到 DeltaFIFO 中</p>
-</li>
+<li>全局安装<code>commitizen</code>node模块</li>
 </ol>
+<pre><code>npm install -g commitizen
+</code></pre><ol start="2">
+<li>在项目目录下运行命令</li>
+</ol>
+<pre><code>commitizen init cz-conventional-changelog --save --save-exact
+</code></pre><ol start="3">
+<li>此时可能会报找不到<code>package.json</code>的错误,使用下面命令来自动生成一个项目的package,然后在运行<strong>2</strong>中的命令.</li>
+</ol>
+<pre><code>npm init --yes
+</code></pre><p>运行完以上一律使用<code>git cz</code> 代替<code>git commit</code>来提交代码,同时会显示一下选项来自动生成符合格式的commit message.</p>
+<pre><code>PS D:\git\pythonPractice&gt; git cz
+cz-cli@2.10.1, cz-conventional-changelog@2.1.0
+
+Line 1 will be cropped at 100 characters. All other lines will be wrapped after 100 characters.
+
+? Select the type of change that you're committing: (Use arrow keys)
+&gt; feat:     A new feature
+  fix:      A bug fix
+  docs:     Documentation only changes
+  style:    Changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc)
+  refactor: A code change that neither fixes a bug nor adds a feature
+  perf:     A code change that improves performance
+  test:     Adding missing tests or correcting existing tests
+(Move up and down to reveal more choices)
+</code></pre><p>按照提示,你可以写出规范的message了<br>idea有插件可以使用<a href="https://plugins.jetbrains.com/plugin/9861-git-commit-template" target="_blank" rel="noopener">git commit template</a></p>
+<blockquote>
+<p>commitizen同时可以检查commit message是否符合格式.<br>生成change log,还又一些高级用法比如ghooks<br>这里就不细说了.详细请查看参考链接和<a href="https://github.com/conventional-changelog-archived-repos/validate-commit-msg" target="_blank" rel="noopener">validate-commit-msg</a></p>
+</blockquote>
+<ol start="4">
+<li>现在项目中可能多出来<code>dir:node_nodules, file:package.json, package-lock.json</code>这些目录和文件,这是node安装模块产生的,如果不是node项目都可以忽略掉,熟悉node的同学肯定都知道哪些是有用的了.</li>
+</ol>
+<blockquote>
+<p>参考链接:<br><a href="http://www.ruanyifeng.com/blog/2016/01/commit_message_change_log.html" target="_blank" rel="noopener">阮一峰</a>的博客<br><a href="http://jartto.wang/2018/07/08/git-commit/" target="_blank" rel="noopener">Jartto’s blog</a></p>
+</blockquote>
 <script>
         document.querySelectorAll('.github-emoji')
           .forEach(el => {
@@ -686,9 +685,9 @@ Transfer-Encoding: chunked
             <br/>
             <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/Text"
                   property="dct:title" rel="dct:type">
-                    《理解K8S的设计精髓之List-Watch机制和Informer模块》
+                    《Git生态探索之Commit message和Change log编写最佳实践》
                 </span> 由
-            <a xmlns:cc="http://creativecommons.org/ns#" href="/2019/08/28/li-jie-k8s-de-she-ji-jing-sui-zhi-list-watch-ji-zhi-he-informer-mo-kuai/" property="cc:attributionName"
+            <a xmlns:cc="http://creativecommons.org/ns#" href="/2019/08/28/git-sheng-tai-tan-suo-zhi-commit-message-he-change-log-bian-xie-zui-jia-shi-jian/" property="cc:attributionName"
                rel="cc:attributionURL">
                 Lateautumn4Lin
             </a> 采用
@@ -729,7 +728,7 @@ Transfer-Encoding: chunked
         repo: 'https://cloudcrawler.club/',
         owner: 'lateautumn4Lin',
         admin: ["lateautumn4Lin"],
-        id: '2019-08-28T01-26-29',
+        id: '2019-08-28T23-29-12',
         distractionFreeMode: false  // Facebook-like distraction free mode
     });
 
@@ -750,9 +749,10 @@ Transfer-Encoding: chunked
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6 overflow-policy" data-aos="fade-up">
+        <div class="article col s12 m6 overflow-policy" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fa fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="fa fa-dot-circle-o"></i>&nbsp;本篇
+            </div>
             <div class="card">
                 <a href="/2019/08/28/git-sheng-tai-tan-suo-zhi-commit-message-he-change-log-bian-xie-zui-jia-shi-jian/">
                     <div class="card-image">
@@ -770,9 +770,9 @@ Transfer-Encoding: chunked
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="fa fa-clock-o fa-fw icon-date"></i>2019-08-28
-                        </span>
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-08-28
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fa fa-bookmark fa-fw icon-category"></i>
@@ -785,6 +785,7 @@ Transfer-Encoding: chunked
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
@@ -807,19 +808,20 @@ Transfer-Encoding: chunked
                 下一篇&nbsp;<i class="fa fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2019/08/28/tou-guo-zhen-shi-chang-jing-fen-xi-k8s-de-endpointcontroller-de-yuan-ma/">
+                <a href="/2019/08/28/li-jie-k8s-de-she-ji-jing-sui-zhi-list-watch-ji-zhi-he-informer-mo-kuai/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="透过真实场景分析K8S的EndpointController的源码">
+                        <img src="/medias/featureimages/4.jpg" class="responsive-img" alt="理解K8S的设计精髓之List-Watch机制和Informer模块">
                         
-                        <span class="card-title">透过真实场景分析K8S的EndpointController的源码</span>
+                        <span class="card-title">理解K8S的设计精髓之List-Watch机制和Informer模块</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            场景重现最近遇到一个问题，在K8S的几台机器上中创建了Glusterfs的集群，通过官方的教程一步步的来利用Glusterfs创建Volume以及PV，不过只是创建了每个Volume的Endpoint，并没有相对应的创建Service实例（
+                            1. 前言最近想深入了解一下K8S的内部通信机制，因此读了几遍K8S的源码，感慨很深。至今清楚的记得，当了解到K8S 组件之间仅采用HTTP 协议通信，没有依赖中间件时，我非常好奇它是如何做到的。
+在K8S 内部通信中，肯定要保证消息的实时
                         
                     </div>
                     <div class="publish-info">
@@ -845,8 +847,12 @@ Transfer-Encoding: chunked
                         <span class="chip bg-color">K8S</span>
                     </a>
                     
-                    <a href="/tags/源码/" target="_blank">
-                        <span class="chip bg-color">源码</span>
+                    <a href="/tags/Go/" target="_blank">
+                        <span class="chip bg-color">Go</span>
+                    </a>
+                    
+                    <a href="/tags/List-Watch/" target="_blank">
+                        <span class="chip bg-color">List-Watch</span>
                     </a>
                     
                 </div>

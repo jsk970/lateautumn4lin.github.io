@@ -28,7 +28,8 @@
     </style>
 
     <script src="/libs/jquery/jquery-2.2.0.min.js"></script>
-<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 
 
 <body>
@@ -81,7 +82,7 @@
             
             <i class="fa fa-archive"></i>
             
-            <span>归档</span>
+            <span>时间线</span>
         </a>
     </li>
     
@@ -90,7 +91,7 @@
             
             <i class="fa fa-user-circle-o"></i>
             
-            <span>关于</span>
+            <span>关于我</span>
         </a>
     </li>
     
@@ -99,7 +100,7 @@
             
             <i class="fa fa-address-book"></i>
             
-            <span>友情链接</span>
+            <span>业界大佬</span>
         </a>
     </li>
     
@@ -160,7 +161,7 @@
                 
                 <i class="fa fa-fw fa-archive"></i>
                 
-                归档
+                时间线
             </a>
         </li>
         
@@ -169,7 +170,7 @@
                 
                 <i class="fa fa-fw fa-user-circle-o"></i>
                 
-                关于
+                关于我
             </a>
         </li>
         
@@ -178,7 +179,7 @@
                 
                 <i class="fa fa-fw fa-address-book"></i>
                 
-                友情链接
+                业界大佬
             </a>
         </li>
         
@@ -428,7 +429,7 @@
 </ul>
 <h4 id="1-2-源码目录结构"><a href="#1-2-源码目录结构" class="headerlink" title="1.2 源码目录结构"></a>1.2 源码目录结构</h4><p>由于我们重点看<code>Endpoint</code>部分，因此我们只看<code>Endpoint</code>相关的源码<br><img src="https://upload-images.jianshu.io/upload_images/3029445-ac22778f75c458be.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Endpoint"></p>
 <h4 id="1-3-Endpoint的初始化"><a href="#1-3-Endpoint的初始化" class="headerlink" title="1.3 Endpoint的初始化"></a>1.3 Endpoint的初始化</h4><p>文件位置： <code>endpoints_controller.go</code></p>
-<pre class=" language-golang"><code class="language-golang">// NewEndpointController returns a new *EndpointController.
+<pre class="line-numbers language-golang"><code class="language-golang">// NewEndpointController returns a new *EndpointController.
 //我们可以看到在Endpoint初始化的时候，已经注册了三个informer，分别是podInformer，serviceInformer，endpointsInformer
 func NewEndpointController(podInformer coreinformers.PodInformer, serviceInformer coreinformers.ServiceInformer,
     endpointsInformer coreinformers.EndpointsInformer, client clientset.Interface) *EndpointController {
@@ -475,9 +476,9 @@ func NewEndpointController(podInformer coreinformers.PodInformer, serviceInforme
     e.eventRecorder = recorder
 
     return e
-}</code></pre>
+}<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>我们看看<code>pod</code>注册的<code>Handler</code>引用了哪些函数</p>
-<h5 id="1-3-1-e-addPod"><a href="#1-3-1-e-addPod" class="headerlink" title="1.3.1 e.addPod"></a>1.3.1 e.addPod</h5><pre class=" language-go"><code class="language-go"><span class="token keyword">func</span> <span class="token punctuation">(</span>e <span class="token operator">*</span>EndpointController<span class="token punctuation">)</span> <span class="token function">addPod</span><span class="token punctuation">(</span>obj <span class="token keyword">interface</span><span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+<h5 id="1-3-1-e-addPod"><a href="#1-3-1-e-addPod" class="headerlink" title="1.3.1 e.addPod"></a>1.3.1 e.addPod</h5><pre class="line-numbers language-go"><code class="language-go"><span class="token keyword">func</span> <span class="token punctuation">(</span>e <span class="token operator">*</span>EndpointController<span class="token punctuation">)</span> <span class="token function">addPod</span><span class="token punctuation">(</span>obj <span class="token keyword">interface</span><span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
 <span class="token comment" spellcheck="true">//实例化一个pod对象</span>
     pod <span class="token operator">:=</span> obj<span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token operator">*</span>v1<span class="token punctuation">.</span>Pod<span class="token punctuation">)</span>
     services<span class="token punctuation">,</span> err <span class="token operator">:=</span> e<span class="token punctuation">.</span><span class="token function">getPodServiceMemberships</span><span class="token punctuation">(</span>pod<span class="token punctuation">)</span>
@@ -509,8 +510,8 @@ func NewEndpointController(podInformer coreinformers.PodInformer, serviceInforme
         set<span class="token punctuation">.</span><span class="token function">Insert</span><span class="token punctuation">(</span>key<span class="token punctuation">)</span>
     <span class="token punctuation">}</span>
     <span class="token keyword">return</span> set<span class="token punctuation">,</span> <span class="token boolean">nil</span>
-<span class="token punctuation">}</span></code></pre>
-<h5 id="1-3-2-e-updatePod"><a href="#1-3-2-e-updatePod" class="headerlink" title="1.3.2 e.updatePod"></a>1.3.2 e.updatePod</h5><pre class=" language-go"><code class="language-go"><span class="token keyword">func</span> <span class="token punctuation">(</span>e <span class="token operator">*</span>EndpointController<span class="token punctuation">)</span> <span class="token function">updatePod</span><span class="token punctuation">(</span>old<span class="token punctuation">,</span> cur <span class="token keyword">interface</span><span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h5 id="1-3-2-e-updatePod"><a href="#1-3-2-e-updatePod" class="headerlink" title="1.3.2 e.updatePod"></a>1.3.2 e.updatePod</h5><pre class="line-numbers language-go"><code class="language-go"><span class="token keyword">func</span> <span class="token punctuation">(</span>e <span class="token operator">*</span>EndpointController<span class="token punctuation">)</span> <span class="token function">updatePod</span><span class="token punctuation">(</span>old<span class="token punctuation">,</span> cur <span class="token keyword">interface</span><span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     newPod <span class="token operator">:=</span> cur<span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token operator">*</span>v1<span class="token punctuation">.</span>Pod<span class="token punctuation">)</span>
     oldPod <span class="token operator">:=</span> old<span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token operator">*</span>v1<span class="token punctuation">.</span>Pod<span class="token punctuation">)</span>
 <span class="token comment" spellcheck="true">//比较两者的ResourceVersion，对比更新后的pod与原pod，如果两者的资源版本相等，则直接返回，不进行入队操作</span>
@@ -583,8 +584,8 @@ func NewEndpointController(podInformer coreinformers.PodInformer, serviceInforme
         <span class="token keyword">return</span> <span class="token boolean">false</span>
     <span class="token punctuation">}</span>
     <span class="token keyword">return</span> <span class="token boolean">true</span>
-<span class="token punctuation">}</span></code></pre>
-<h4 id="1-4-Endpoint-Controller具体逻辑"><a href="#1-4-Endpoint-Controller具体逻辑" class="headerlink" title="1.4 Endpoint-Controller具体逻辑"></a>1.4 Endpoint-Controller具体逻辑</h4><pre class=" language-go"><code class="language-go"><span class="token comment" spellcheck="true">// Run will not return until stopCh is closed. workers determines how many</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="1-4-Endpoint-Controller具体逻辑"><a href="#1-4-Endpoint-Controller具体逻辑" class="headerlink" title="1.4 Endpoint-Controller具体逻辑"></a>1.4 Endpoint-Controller具体逻辑</h4><pre class="line-numbers language-go"><code class="language-go"><span class="token comment" spellcheck="true">// Run will not return until stopCh is closed. workers determines how many</span>
 <span class="token comment" spellcheck="true">// endpoints will be handled in parallel.</span>
 <span class="token keyword">func</span> <span class="token punctuation">(</span>e <span class="token operator">*</span>EndpointController<span class="token punctuation">)</span> <span class="token function">Run</span><span class="token punctuation">(</span>workers <span class="token builtin">int</span><span class="token punctuation">,</span> stopCh <span class="token operator">&lt;-</span><span class="token keyword">chan</span> <span class="token keyword">struct</span><span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     <span class="token keyword">defer</span> utilruntime<span class="token punctuation">.</span><span class="token function">HandleCrash</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
@@ -627,7 +628,7 @@ func NewEndpointController(podInformer coreinformers.PodInformer, serviceInforme
 
     <span class="token keyword">return</span> <span class="token boolean">true</span>
 <span class="token punctuation">}</span>
-</code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>endpointController的主要逻辑在<code>syncService</code>函数</p>
 <pre><code>func (e *EndpointController) syncService(key string) error {
     startTime := time.Now()
@@ -812,12 +813,12 @@ func NewEndpointController(podInformer coreinformers.PodInformer, serviceInforme
     }
     return nil
 }</code></pre><h4 id="1-5-Endpoint检测"><a href="#1-5-Endpoint检测" class="headerlink" title="1.5 Endpoint检测"></a>1.5 Endpoint检测</h4><p>之前说的是当<code>Endpoint</code>和<code>Service</code>绑定的时候<code>Service</code>和<code>Pod</code>改变时的一系列操作，现在我们回到问题，如果<code>Endpoint</code>单独存在，<code>K8S</code>是如何检测并且删除的？<br>我们重新看看<code>Run</code>函数中的</p>
-<pre class=" language-go"><code class="language-go"><span class="token keyword">go</span> <span class="token keyword">func</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+<pre class="line-numbers language-go"><code class="language-go"><span class="token keyword">go</span> <span class="token keyword">func</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
         <span class="token keyword">defer</span> utilruntime<span class="token punctuation">.</span><span class="token function">HandleCrash</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
         e<span class="token punctuation">.</span><span class="token function">checkLeftoverEndpoints</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-    <span class="token punctuation">}</span><span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
+    <span class="token punctuation">}</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 <p><code>K8S</code>在运行<code>Run</code>函数的时候启动了一个协程去检测当前所有的<code>Endpoint</code></p>
-<pre class=" language-go"><code class="language-go"><span class="token comment" spellcheck="true">// checkLeftoverEndpoints lists all currently existing endpoints and adds their</span>
+<pre class="line-numbers language-go"><code class="language-go"><span class="token comment" spellcheck="true">// checkLeftoverEndpoints lists all currently existing endpoints and adds their</span>
 <span class="token comment" spellcheck="true">// service to the queue. This will detect endpoints that exist with no</span>
 <span class="token comment" spellcheck="true">// corresponding service; these endpoints need to be deleted. We only need to</span>
 <span class="token comment" spellcheck="true">// do this once on startup, because in steady-state these are detected (but</span>
@@ -848,7 +849,7 @@ func NewEndpointController(podInformer coreinformers.PodInformer, serviceInforme
 <span class="token comment" spellcheck="true">//假如此处endpoint没有对应的service，猜想会把endpoint的name当成key传入queue，然后在之前的逻辑中判断获取service name错误，于是删除endpoint</span>
         e<span class="token punctuation">.</span>queue<span class="token punctuation">.</span><span class="token function">Add</span><span class="token punctuation">(</span>key<span class="token punctuation">)</span>
     <span class="token punctuation">}</span>
-<span class="token punctuation">}</span></code></pre>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="2-总结"><a href="#2-总结" class="headerlink" title="2. 总结"></a>2. 总结</h3><p>一句话，遇到如上问题有两种解决的方式：</p>
 <ol>
 <li>创建<code>Service</code>的时候使用<code>Selector</code>，这样可以自动创建<code>Endpoint</code></li>
@@ -1058,29 +1059,29 @@ func NewEndpointController(podInformer coreinformers.PodInformer, serviceInforme
     </div>
 
     
+        <link rel="stylesheet" href="/libs/gitalk/gitalk.css">
+<link rel="stylesheet" href="/css/my-gitalk.css">
 
-    
-        <link rel="stylesheet" href="/libs/gitment/gitment-default.css">
-<link rel="stylesheet" href="/css/gitment.css">
-
-<div class="gitment-card card" data-aos="fade-up">
-    <div id="gitment-content" class="card-content"></div>
+<div class="card gitalk-card" data-aos="fade-up">
+    <div id="gitalk-container" class="card-content"></div>
 </div>
 
-<script src="/libs/gitment/gitment.js"></script>
+<script src="/libs/gitalk/gitalk.min.js"></script>
 <script>
-var gitment = new Gitment({
-    id: 'Wed Aug 28 2019 00:49:32 GMT+0800',
-    owner: 'lateautumn4Lin',
-    repo: 'http://localhost:4000',
-    oauth: {
-        client_id: '9f02e1ae81059044f62b',
-        client_secret: '9f0812d161051e0201261f44b403b83f3b64f228'
-    }
-});
+    let gitalk = new Gitalk({
+        clientID: '9f02e1ae81059044f62b',
+        clientSecret: '9f0812d161051e0201261f44b403b83f3b64f228',
+        repo: 'https://cloudcrawler.club/',
+        owner: 'lateautumn4Lin',
+        admin: ["lateautumn4Lin"],
+        id: '2019-08-28T00-49-32',
+        distractionFreeMode: false  // Facebook-like distraction free mode
+    });
 
-gitment.render('gitment-content');
+    gitalk.render('gitalk-container');
 </script>
+    
+
     
 
     
@@ -1329,7 +1330,7 @@ gitment.render('gitment-content');
                 
                 <span id="busuanzi_container_site_uv">
                     <i class="fa fa-users"></i>
-                    次,&nbsp;访客数 <span id="busuanzi_value_site_uv" class="white-color"></span> 人.
+                    次,&nbsp;大大感谢<span id="busuanzi_value_site_uv" class="white-color"></span> 位朋友的光临.
                 </span>
                 
             

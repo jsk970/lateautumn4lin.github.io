@@ -4,8 +4,8 @@
 
 <head><meta name="generator" content="Hexo 3.9.0">
     <meta charset="utf-8">
-    <meta name="keywords" content="关于, 云爬虫技术研究笔记">
-    <meta name="description" content="关于 | 云爬虫技术研究笔记">
+    <meta name="keywords" content="关于我, 云爬虫技术研究笔记">
+    <meta name="description" content="关于我 | 云爬虫技术研究笔记">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -13,7 +13,7 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>关于 | 云爬虫技术研究笔记</title>
+    <title>关于我 | 云爬虫技术研究笔记</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
@@ -28,7 +28,8 @@
     </style>
 
     <script src="/libs/jquery/jquery-2.2.0.min.js"></script>
-<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 
 
 <body>
@@ -81,7 +82,7 @@
             
             <i class="fa fa-archive"></i>
             
-            <span>归档</span>
+            <span>时间线</span>
         </a>
     </li>
     
@@ -90,7 +91,7 @@
             
             <i class="fa fa-user-circle-o"></i>
             
-            <span>关于</span>
+            <span>关于我</span>
         </a>
     </li>
     
@@ -99,7 +100,7 @@
             
             <i class="fa fa-address-book"></i>
             
-            <span>友情链接</span>
+            <span>业界大佬</span>
         </a>
     </li>
     
@@ -160,7 +161,7 @@
                 
                 <i class="fa fa-fw fa-archive"></i>
                 
-                归档
+                时间线
             </a>
         </li>
         
@@ -169,7 +170,7 @@
                 
                 <i class="fa fa-fw fa-user-circle-o"></i>
                 
-                关于
+                关于我
             </a>
         </li>
         
@@ -178,7 +179,7 @@
                 
                 <i class="fa fa-fw fa-address-book"></i>
                 
-                友情链接
+                业界大佬
             </a>
         </li>
         
@@ -298,21 +299,21 @@ $('.bg-cover').css('background-image', 'url(/medias/banner/' + new Date().getDay
                     <div class="post-statis col l4 hide-on-med-and-down" data-aos="zoom-in-right">
                         
 <div class="statis">
-    <span class="count"><a href="/" target="_blank">2</a></span>
+    <span class="count"><a href="/" target="_blank">3</a></span>
     <span class="name">文章</span>
 </div>
 
 
 
 <div class="statis">
-    <span class="count"><a href="/categories" target="_blank">1</a></span>
+    <span class="count"><a href="/categories" target="_blank">2</a></span>
     <span class="name">分类</span>
 </div>
 
 
 
 <div class="statis">
-    <span class="count"><a href="/tags" target="_blank">4</a></span>
+    <span class="count"><a href="/tags" target="_blank">6</a></span>
     <span class="name">标签</span>
 </div>
 
@@ -327,21 +328,21 @@ $('.bg-cover').css('background-image', 'url(/medias/banner/' + new Date().getDay
                                 <div class="post-statis hide-on-large-only" data-aos="zoom-in-right">
                                     
 <div class="statis">
-    <span class="count"><a href="/" target="_blank">2</a></span>
+    <span class="count"><a href="/" target="_blank">3</a></span>
     <span class="name">文章</span>
 </div>
 
 
 
 <div class="statis">
-    <span class="count"><a href="/categories" target="_blank">1</a></span>
+    <span class="count"><a href="/categories" target="_blank">2</a></span>
     <span class="name">分类</span>
 </div>
 
 
 
 <div class="statis">
-    <span class="count"><a href="/tags" target="_blank">4</a></span>
+    <span class="count"><a href="/tags" target="_blank">6</a></span>
     <span class="name">标签</span>
 </div>
 
@@ -482,7 +483,7 @@ $('.bg-cover').css('background-image', 'url(/medias/banner/' + new Date().getDay
                 name: '文章篇数',
                 type: 'line',
                 color: ['#6772e5'],
-                data: [0,0,0,0,0,0,0,0,0,0,0,0,2],
+                data: [0,0,0,0,0,0,0,0,0,0,0,0,3],
                 markPoint: {
                     symbolSize: 45,
                     color: ['#fa755a','#3ecf8e','#82d3f4'],
@@ -524,7 +525,7 @@ $('.bg-cover').css('background-image', 'url(/medias/banner/' + new Date().getDay
                 type: 'pie',
                 radius: '50%',
                 color: ['#6772e5', '#ff9e0f', '#fa755a', '#3ecf8e', '#82d3f4', '#ab47bc', '#525f7f', '#f51c47', '#26A69A'],
-                data: [{"name":"解读K8S源码","value":2}],
+                data: [{"name":"Git生态探索","value":1},{"name":"解读K8S源码","value":2}],
                 itemStyle: {
                     emphasis: {
                         shadowBlur: 10,
@@ -548,7 +549,7 @@ $('.bg-cover').css('background-image', 'url(/medias/banner/' + new Date().getDay
         xAxis: [
             {
                 type: 'category',
-                data: ["K8S","Go","List-Watch","源码"]
+                data: ["K8S","Git","最佳实践","Go","List-Watch","源码"]
             }
         ],
         yAxis: [
@@ -561,7 +562,7 @@ $('.bg-cover').css('background-image', 'url(/medias/banner/' + new Date().getDay
                 type: 'bar',
                 color: ['#82d3f4'],
                 barWidth : 18,
-                data: [2,1,1,1],
+                data: [2,1,1,1,1,1],
                 markPoint: {
                     symbolSize: 45,
                     data: [{
@@ -716,6 +717,18 @@ $('.bg-cover').css('background-image', 'url(/medias/banner/' + new Date().getDay
         <div class="tag-chips center-align">
             
             
+            <a href="/tags/Git/" target="_blank">
+                <span class="chip center-align waves-effect waves-light chip-default">Git</span>
+            </a>
+            
+            
+            
+            <a href="/tags/最佳实践/" target="_blank">
+                <span class="chip center-align waves-effect waves-light chip-default">最佳实践</span>
+            </a>
+            
+            
+            
             <a href="/tags/K8S/" target="_blank">
                 <span class="chip center-align waves-effect waves-light chip-default">K8S</span>
             </a>
@@ -814,7 +827,7 @@ $('.bg-cover').css('background-image', 'url(/medias/banner/' + new Date().getDay
                 
                 <span id="busuanzi_container_site_uv">
                     <i class="fa fa-users"></i>
-                    次,&nbsp;访客数 <span id="busuanzi_value_site_uv" class="white-color"></span> 人.
+                    次,&nbsp;大大感谢<span id="busuanzi_value_site_uv" class="white-color"></span> 位朋友的光临.
                 </span>
                 
             

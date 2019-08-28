@@ -28,7 +28,8 @@
     </style>
 
     <script src="/libs/jquery/jquery-2.2.0.min.js"></script>
-<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 
 
 <body>
@@ -81,7 +82,7 @@
             
             <i class="fa fa-archive"></i>
             
-            <span>归档</span>
+            <span>时间线</span>
         </a>
     </li>
     
@@ -90,7 +91,7 @@
             
             <i class="fa fa-user-circle-o"></i>
             
-            <span>关于</span>
+            <span>关于我</span>
         </a>
     </li>
     
@@ -99,7 +100,7 @@
             
             <i class="fa fa-address-book"></i>
             
-            <span>友情链接</span>
+            <span>业界大佬</span>
         </a>
     </li>
     
@@ -160,7 +161,7 @@
                 
                 <i class="fa fa-fw fa-archive"></i>
                 
-                归档
+                时间线
             </a>
         </li>
         
@@ -169,7 +170,7 @@
                 
                 <i class="fa fa-fw fa-user-circle-o"></i>
                 
-                关于
+                关于我
             </a>
         </li>
         
@@ -178,7 +179,7 @@
                 
                 <i class="fa fa-fw fa-address-book"></i>
                 
-                友情链接
+                业界大佬
             </a>
         </li>
         
@@ -385,6 +386,28 @@ $('.bg-cover').css('background-image', 'url(/medias/banner/' + new Date().getDay
     
     
     <div class="carousel-item amber white-text carousel-post bg-cover"
+            style="background-image: url('/medias/featureimages/16.jpg');">
+        <div class="container">
+            <div class="row">
+                <div class="col s10 offset-s1">
+                    <div class="title center-align">Git生态探索之Commit message和Change log编写最佳实践</div>
+                    <div class="description center-align">
+                    
+                        背景最近在学习规范如何使用git来更高效的开发，发现一个比较好用的来规范comment的工具，所以想来记录一下。一般来说，commit message 应该清晰明了，说明本次提交的目的。所以需要一些规范来使这些comment变得可读，com
+                    
+                    </div>
+                    <div class="cover-btns">
+                        <a href="/2019/08/28/git-sheng-tai-tan-suo-zhi-commit-message-he-change-log-bian-xie-zui-jia-shi-jian/" class="waves-effect waves-light btn" target="_blank">
+                            <i class="icon fa fa-eye fa-fw"></i>阅读更多
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+    <div class="carousel-item amber white-text carousel-post bg-cover"
             style="background-image: url('/medias/featureimages/4.jpg');">
         <div class="container">
             <div class="row">
@@ -583,7 +606,28 @@ $(function () {
 
     
     
-    <div class="col s12 m6" >
+    <div class="col s12" >
+        <div class="post-card" style="background-image: url('/medias/featureimages/16.jpg')">
+            <div class="post-body">
+                <div class="post-categories">
+                    
+                    <a href="/categories/Git生态探索/" class="category" target="_blank">Git生态探索</a>
+                    
+                </div>
+                <a href="/2019/08/28/git-sheng-tai-tan-suo-zhi-commit-message-he-change-log-bian-xie-zui-jia-shi-jian/" target="_blank">
+                    <h3 class="post-title">Git生态探索之Commit message和Change log编写最佳实践</h3>
+                </a>
+                <p class="post-description">背景最近在学习规范如何使用git来更高效的开发，发现一个比较好用的来规范comment的工具，所以想来记录一下。一般来说，commit message 应该清晰明了，说明</p>
+                <a href="/2019/08/28/git-sheng-tai-tan-suo-zhi-commit-message-he-change-log-bian-xie-zui-jia-shi-jian/" target="_blank"
+                        class="read-more btn waves-effect waves-light" style="background: linear-gradient(to right, #FF5E3A 0%, #FF2A68 100%)">
+                    <i class="icon fa fa-eye fa-fw"></i>阅读更多
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    
+    <div class="col s12 m6" data-aos="zoom-in-up">
         <div class="post-card" style="background-image: url('/medias/featureimages/4.jpg')">
             <div class="post-body">
                 <div class="post-categories">
@@ -594,13 +638,9 @@ $(function () {
                 <a href="/2019/08/28/li-jie-k8s-de-she-ji-jing-sui-zhi-list-watch-ji-zhi-he-informer-mo-kuai/" target="_blank">
                     <h3 class="post-title">理解K8S的设计精髓之List-Watch机制和Informer模块</h3>
                 </a>
-                <p class="post-description">
-                    
-                        1. 前言最近想深入了解一下K8S的内部通信机制，因此读了几遍K8S的源码，感慨很深。至今清楚的记得，当了解到K8S 组件之间仅采用HTTP
-                    
-                </p>
+                <p class="post-description">1. 前言最近想深入了解一下K8S的内部通信机制，因此读了几遍K8S的源码，感慨很深。至今清楚的记得，当了解到K8S 组件之间仅采用HTTP</p>
                 <a href="/2019/08/28/li-jie-k8s-de-she-ji-jing-sui-zhi-list-watch-ji-zhi-he-informer-mo-kuai/" target="_blank"
-                        class="read-more btn waves-effect waves-light" style="background: linear-gradient(to right, #FF5E3A 0%, #FF2A68 100%)">
+                        class="read-more btn waves-effect waves-light" style="background: linear-gradient(to right, #EF4DB6 0%, #C643FC 100%)">
                     <i class="icon fa fa-eye fa-fw"></i>阅读更多
                 </a>
             </div>
@@ -608,7 +648,7 @@ $(function () {
     </div>
     
     
-    <div class="col s12 m6" >
+    <div class="col s12 m6" data-aos="zoom-in-up">
         <div class="post-card" style="background-image: url('/medias/featureimages/0.jpg')">
             <div class="post-body">
                 <div class="post-categories">
@@ -619,13 +659,9 @@ $(function () {
                 <a href="/2019/08/28/tou-guo-zhen-shi-chang-jing-fen-xi-k8s-de-endpointcontroller-de-yuan-ma/" target="_blank">
                     <h3 class="post-title">透过真实场景分析K8S的EndpointController的源码</h3>
                 </a>
-                <p class="post-description">
-                    
-                        场景重现最近遇到一个问题，在K8S的几台机器上中创建了Glusterfs的集群，通过官方的教程一步步的来利用Glusterfs创建Volum
-                    
-                </p>
+                <p class="post-description">场景重现最近遇到一个问题，在K8S的几台机器上中创建了Glusterfs的集群，通过官方的教程一步步的来利用Glusterfs创建Volum</p>
                 <a href="/2019/08/28/tou-guo-zhen-shi-chang-jing-fen-xi-k8s-de-endpointcontroller-de-yuan-ma/" target="_blank"
-                        class="read-more btn waves-effect waves-light" style="background: linear-gradient(to right, #EF4DB6 0%, #C643FC 100%)">
+                        class="read-more btn waves-effect waves-light" style="background: linear-gradient(to right, #1AD6FD 0%, #1D62F0 100%)">
                     <i class="icon fa fa-eye fa-fw"></i>阅读更多
                 </a>
             </div>
@@ -648,6 +684,57 @@ $(function () {
     <!-- 所有文章卡片 -->
     <article id="articles" class="container articles">
         <div class="row article-row">
+            
+            <div class="article col s12 m6 l4 overflow-policy" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2019/08/28/git-sheng-tai-tan-suo-zhi-commit-message-he-change-log-bian-xie-zui-jia-shi-jian/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/16.jpg" class="responsive-img" alt="Git生态探索之Commit message和Change log编写最佳实践">
+                            
+                            <span class="card-title">Git生态探索之Commit message和Change log编写最佳实践</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                背景最近在学习规范如何使用git来更高效的开发，发现一个比较好用的来规范comment的工具，所以想来记录一下。一般来说，commit message 应该清晰明了，说明本次提交的目的。所以需要一些规范来使这些comment变得可读，com
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-08-28
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fa fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/Git生态探索/" class="post-category" target="_blank">
+                                    Git生态探索
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/Git/" target="_blank">
+                            <span class="chip bg-color">Git</span>
+                        </a>
+                        
+                        <a href="/tags/最佳实践/" target="_blank">
+                            <span class="chip bg-color">最佳实践</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
             
             <div class="article col s12 m6 l4 overflow-policy" data-aos="zoom-in">
                 <div class="card">
@@ -784,7 +871,7 @@ $(function () {
                 
                 <span id="busuanzi_container_site_uv">
                     <i class="fa fa-users"></i>
-                    次,&nbsp;访客数 <span id="busuanzi_value_site_uv" class="white-color"></span> 人.
+                    次,&nbsp;大大感谢<span id="busuanzi_value_site_uv" class="white-color"></span> 位朋友的光临.
                 </span>
                 
             
