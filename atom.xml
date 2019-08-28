@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>云爬虫技术研究笔记</title>
+  
+  <subtitle>专注于云原生与爬虫领域</subtitle>
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="http://yoursite.com/"/>
+  <updated>2019-08-28T16:26:46.666Z</updated>
+  <id>http://yoursite.com/</id>
+  
+  <author>
+    <name>Lateautumn4Lin</name>
+    
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Git生态探索之Commit message和Change log编写最佳实践</title>
+    <link href="http://yoursite.com/2019/08/28/git-sheng-tai-tan-suo-zhi-commit-message-he-change-log-bian-xie-zui-jia-shi-jian/"/>
+    <id>http://yoursite.com/2019/08/28/git-sheng-tai-tan-suo-zhi-commit-message-he-change-log-bian-xie-zui-jia-shi-jian/</id>
+    <published>2019-08-28T15:29:12.000Z</published>
+    <updated>2019-08-28T16:26:46.666Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h3 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="Git生态探索" scheme="http://yoursite.com/categories/Git%E7%94%9F%E6%80%81%E6%8E%A2%E7%B4%A2/"/>
+    
+    
+      <category term="Git" scheme="http://yoursite.com/tags/Git/"/>
+    
+      <category term="最佳实践" scheme="http://yoursite.com/tags/%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>理解K8S的设计精髓之List-Watch机制和Informer模块</title>
+    <link href="http://yoursite.com/2019/08/28/li-jie-k8s-de-she-ji-jing-sui-zhi-list-watch-ji-zhi-he-informer-mo-kuai/"/>
+    <id>http://yoursite.com/2019/08/28/li-jie-k8s-de-she-ji-jing-sui-zhi-list-watch-ji-zhi-he-informer-mo-kuai/</id>
+    <published>2019-08-27T17:26:29.000Z</published>
+    <updated>2019-08-28T16:24:06.141Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h3 id=&quot;1-前言&quot;&gt;&lt;a href=&quot;#1-前言&quot; class=&quot;headerlink&quot; title=&quot;1. 前言&quot;&gt;&lt;/a&gt;1.
+        
+      
+    
+    </summary>
+    
+      <category term="解读K8S源码" scheme="http://yoursite.com/categories/%E8%A7%A3%E8%AF%BBK8S%E6%BA%90%E7%A0%81/"/>
+    
+    
+      <category term="K8S" scheme="http://yoursite.com/tags/K8S/"/>
+    
+      <category term="Go" scheme="http://yoursite.com/tags/Go/"/>
+    
+      <category term="List-Watch" scheme="http://yoursite.com/tags/List-Watch/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>透过真实场景分析K8S的EndpointController的源码</title>
+    <link href="http://yoursite.com/2019/08/28/tou-guo-zhen-shi-chang-jing-fen-xi-k8s-de-endpointcontroller-de-yuan-ma/"/>
+    <id>http://yoursite.com/2019/08/28/tou-guo-zhen-shi-chang-jing-fen-xi-k8s-de-endpointcontroller-de-yuan-ma/</id>
+    <published>2019-08-27T16:49:32.000Z</published>
+    <updated>2019-08-28T16:24:08.690Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h3 id=&quot;场景重现&quot;&gt;&lt;a href=&quot;#场景重现&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="解读K8S源码" scheme="http://yoursite.com/categories/%E8%A7%A3%E8%AF%BBK8S%E6%BA%90%E7%A0%81/"/>
+    
+    
+      <category term="K8S" scheme="http://yoursite.com/tags/K8S/"/>
+    
+      <category term="源码" scheme="http://yoursite.com/tags/%E6%BA%90%E7%A0%81/"/>
+    
+  </entry>
+  
+</feed>
